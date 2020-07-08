@@ -1,1 +1,7 @@
-<p>chat-form works!</p>
+<form [formGroup]="chatForm">
+    <!--  -->
+    <input (keydown)="handleSubmit($event)" type="text" formControlName="message" placeholder="Message . .">
+    <div (click)="submit()">
+        <label>Submit</label>
+    </div>
+</form>

@@ -16,7 +16,7 @@ import { ChatService } from './services/chat.service';
 import { AuthService } from './services/auth.service';
 
 import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { appRoutes } from '../route';
 @NgModule({
@@ -35,6 +35,7 @@ import { appRoutes } from '../route';
     imports: [
         BrowserModule,
         FormsModule,
+        ReactiveFormsModule,
         RouterModule.forRoot(appRoutes)
     ],
     providers: [
