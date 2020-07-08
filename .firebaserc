@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "warcat-2f9a6": {
+      "hosting": {
+        "warcat": [
+          "warcat-2f9a6"
+        ]
+      }
+    }
+  }
+}

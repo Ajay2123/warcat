@@ -12,23 +12,35 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { UserListComponent } from './components/user-list/user-list.component';
 import { UserItemComponent } from './components/user-item/user-item.component';
 
+import { ChatService } from './services/chat.service';
+import { AuthService } from './services/auth.service';
+
+import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+
+import { appRoutes } from '../route';
 @NgModule({
-  declarations: [
-    AppComponent,
-    ChatFeedComponent,
-    ChatRoomComponent,
-    ChatFormComponent,
-    MessageComponent,
-    LoginComponent,
-    SignupComponent,
-    NavbarComponent,
-    UserListComponent,
-    UserItemComponent
-  ],
-  imports: [
-    BrowserModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        ChatFeedComponent,
+        ChatRoomComponent,
+        ChatFormComponent,
+        MessageComponent,
+        LoginComponent,
+        SignupComponent,
+        NavbarComponent,
+        UserListComponent,
+        UserItemComponent
+    ],
+    imports: [
+        BrowserModule,
+        FormsModule,
+        RouterModule.forRoot(appRoutes)
+    ],
+    providers: [
+        ChatService,
+        AuthService
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }
