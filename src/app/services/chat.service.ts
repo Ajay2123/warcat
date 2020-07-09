@@ -13,9 +13,6 @@ export class ChatService {
     user: any;
     userName: Observable<string>;
     chatMessage: ChatMessage;
-    chatMessages: any = null;
-
-
     constructor(private af: AngularFireDatabase,) {
         /*      this.afAuth.authState.subscribe(auth => {
                  if (auth !== undefined && auth !== null) {
@@ -23,22 +20,26 @@ export class ChatService {
                  }
              }); */
     }
-
     getMessages() {
-        return this.af.list('/messages');
+        return this.af.list('messages', ref => ref.orderByKey().limitToLast(10)).valueChanges();
     }
+
     sendMessage(msg: string) {
-        const timeStamp = this.getTimeStamp();
-        //const userEmail = this.user.email;
-        this.chatMessages = this.getMessages();
-        this.chatMessage = {
-            email: 'ajay',
-            userName: 'ajay',
-            message: msg,
-            timeSent: timeStamp,
-        };
-        console.log(this.chatMessage);
-        this.chatMessages.push(this.chatMessage);
+        if (this.isValidMsg(msg)) {
+            const timeStamp = this.getTimeStamp();
+            //const userEmail = this.user.email;
+            this.chatMessage = {
+                email: 'ajay',
+                userName: 'ajay',
+                message: msg,
+                timeSent: timeStamp,
+            };
+            const messagesRef = this.af.list('messages');
+            messagesRef.push(this.chatMessage);
+        }
+    }
+    isValidMsg(msg: string) {
+        return (msg !== undefined && msg !== null && msg !== '' && msg !== ' ') ? true : false;
     }
 
     getTimeStamp() {

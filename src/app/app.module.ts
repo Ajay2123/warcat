@@ -17,11 +17,13 @@ import { AuthService } from './services/auth.service';
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { appRoutes } from '../route';
 import { environment } from 'src/environments/environment';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 @NgModule({
     declarations: [
         AppComponent,
@@ -41,7 +43,10 @@ import { environment } from 'src/environments/environment';
         ReactiveFormsModule,
         RouterModule.forRoot(appRoutes),
         AngularFireModule.initializeApp(environment.firebaseConfig),
-        AngularFireDatabaseModule, // for database
+        AngularFireModule,
+        AngularFireDatabaseModule,
+        AngularFireAuthModule,
+        AngularFirestoreModule
     ],
     providers: [
         ChatService,
