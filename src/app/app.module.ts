@@ -15,10 +15,13 @@ import { UserItemComponent } from './components/user-item/user-item.component';
 import { ChatService } from './services/chat.service';
 import { AuthService } from './services/auth.service';
 
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { appRoutes } from '../route';
+import { environment } from 'src/environments/environment';
 @NgModule({
     declarations: [
         AppComponent,
@@ -36,7 +39,9 @@ import { appRoutes } from '../route';
         BrowserModule,
         FormsModule,
         ReactiveFormsModule,
-        RouterModule.forRoot(appRoutes)
+        RouterModule.forRoot(appRoutes),
+        AngularFireModule.initializeApp(environment.firebaseConfig),
+        AngularFireDatabaseModule, // for database
     ],
     providers: [
         ChatService,
