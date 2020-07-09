@@ -1,5 +1,16 @@
-<div class="feed">
-    <div *ngFor="let message of feed | async" class="messageContainer">
-        <app-message [chatMessage]=message> </app-message>
+<div class="feedWrapper">
+    <div class="contact-profile">
+        <img src="https://via.placeholder.com/150" alt="">
+        <h1>Crush</h1>
+    </div>
+    <div class="messages">
+        <ul>
+            <li *ngFor="let message of feed | async" class="sent">
+                <app-message [chatMessage]=message> </app-message>
+            </li>
+        </ul>
+    </div>
+    <div class="chatFormWrapper">
+        <app-chat-form></app-chat-form>
     </div>
 </div>

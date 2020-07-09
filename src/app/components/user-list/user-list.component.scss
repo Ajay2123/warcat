@@ -1,0 +1,86 @@
+.contacts {
+    height: calc(100% - 177px);
+    overflow-y: scroll;
+    overflow-x: hidden;
+
+    ul {
+        list-style: none;
+        width: calc(100% - 30px);
+        margin: 15px;
+        padding: 0;
+
+        li.contact {
+            position: relative;
+            margin-top: 10px;
+            font-size: 0.9em;
+            cursor: pointer;
+            border-bottom: 2px solid #f5f5f5;
+
+            :hover {
+                background: #f5f5f5;
+            }
+
+            .wrap {
+                width: 88%;
+                margin: 0 auto;
+                position: relative;
+
+                img {
+                    width: 40px;
+                    border-radius: 50%;
+                    float: left;
+                    margin-right: 10px;
+                }
+
+                .meta {
+                    padding: 5px 0 0 0;
+
+                    .preview {
+                        margin: 5px 0 0 0;
+                        padding: 0 0 1px;
+                        font-weight: 400;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        -moz-transition: 1s all ease;
+                        -o-transition: 1s all ease;
+                        -webkit-transition: 1s all ease;
+                        transition: 1s all ease;
+                    }
+
+                    .name {
+                        font-weight: 600;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 735px) {
+    .contacts {
+        height: calc(100% - 149px);
+        overflow-y: scroll;
+        overflow-x: hidden;
+
+        ul li.contact {
+            padding: 6px 0 46px 8px;
+
+            .wrap {
+                width: 100%;
+
+                img {
+                    margin-right: 0px;
+                }
+
+                .meta {
+                    display: none;
+                }
+            }
+        }
+    }
+
+    .contacts::-webkit-scrollbar {
+        display: none;
+    }
+}

@@ -1,7 +1,9 @@
-<form [formGroup]="chatForm">
-    <!--  -->
-    <input (keydown)="handleSubmit($event)" type="text" formControlName="message" placeholder="Message . .">
-    <div (click)="submit()">
-        <label>Submit</label>
+<div class="message-input">
+    <div class="wrap">
+        <form [formGroup]="chatForm">
+            <!--  -->
+            <input class="chatInput" (keydown)="handleSubmit($event)" type="text" formControlName="message"
+                placeholder="Type a message">
+        </form>
     </div>
-</form>
+</div>

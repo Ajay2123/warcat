@@ -18,7 +18,7 @@ export class MessageComponent implements OnInit {
         this.userName = chatMessage.userName;
         this.userEmail = chatMessage.email;
         this.messageContent = chatMessage.message;
-        this.timeStamp = chatMessage.timeSent;
+        this.timeStamp = chatMessage.timeSent.split(' ')[1];
     }
 
 }
