@@ -9,13 +9,19 @@ p {
     padding: 10px 15px;
     border-radius: 20px;
     max-width: 205px;
-    background: #dcf8c6;
-    float: right;
     line-height: 130%;
+
+    &.sender {
+        background: #dcf8c6;
+        float: right;
+    }
+    &.receiver {
+        background: #f5fdf5;
+        float: left;
+    }
 }
 
 @media screen and (min-width: 735px) {
-
     p {
         max-width: 300px;
     }
