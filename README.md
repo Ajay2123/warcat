@@ -1,6 +1,12 @@
 # Warcat
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.19.
+- Concepts include
+    - Model,Component,Service style implementation 
+    - Authentication with Angula fire auth
+    - Realtime database connection
+    - Redirection untill logged in via auth-guard
+    - AES Encrpyption for all messages stored in database 
 
 ## Development server
 
