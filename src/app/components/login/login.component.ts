@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
     loginForm: FormGroup;
     isError = false;
+    errorMsg: any;
     constructor(private router: Router, private fb: FormBuilder, private authService: AuthService) { }
 
     ngOnInit() {
@@ -24,7 +25,11 @@ export class LoginComponent implements OnInit {
         const pwd = this.loginForm.get('password').value;
 
         this.authService.login(em, pwd)
-            .catch(x => { console.log(x); this.isError = true; });
+            .catch(x => {
+                this.errorMsg = x.message;
+                this.isError = true;
+            });
+
     }
 
 }

@@ -10,6 +10,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 })
 export class SignupComponent implements OnInit {
     signupForm: FormGroup;
+    errorMsg: any;
     constructor(private fb: FormBuilder, private authService: AuthService, private route: Router) { }
     isError = false;
     ngOnInit() {
@@ -25,9 +26,11 @@ export class SignupComponent implements OnInit {
         const pwd = this.signupForm.get('password').value;
 
         this.authService.createUser(un, em, pwd)
-            .then(x => this.route.navigate(['chat'])
-            )
-            .catch(x => this.isError = true);
+            .then(x => this.route.navigate(['chat']))
+            .catch(x => {
+                this.errorMsg = x.message;
+                this.isError = true;
+            });
     }
 
 }

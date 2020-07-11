@@ -24,6 +24,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { appRoutes } from '../route';
 import { environment } from 'src/environments/environment';
 import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AuthGuardService } from './services/auth-guard.service';
 @NgModule({
     declarations: [
         AppComponent,
@@ -50,7 +51,8 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
     ],
     providers: [
         ChatService,
-        AuthService
+        AuthService,
+        AuthGuardService
     ],
     bootstrap: [AppComponent]
 })

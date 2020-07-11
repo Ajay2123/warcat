@@ -1,6 +1,8 @@
 <div class="container">
     <div class="row">
         <div class="main">
+            <h3>Already have an account? <a href="login">Login</a></h3>
+
             <form [formGroup]="signupForm">
                 <div class="form-group">
                     <label for="inputUsernameEmail">Username</label>
@@ -18,7 +20,8 @@
                     Sign Up
                 </button>
                 <div *ngIf="isError" class="form-group" class="alert alert-danger" role="alert">
-                    Unfortunately something went wrong, please try agian later with valid details </div>
+                    {{errorMsg}}
+                </div>
             </form>
         </div>
     </div>

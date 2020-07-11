@@ -22,11 +22,13 @@ export class ChatService {
             if (auth !== undefined && auth !== null) {
                 this.user = auth;
             }
-            this.getUser()
-                .valueChanges()
-                .subscribe((x: any) => {
-                    this.currentUserName = x.username;
-                });
+            const userDetails = this.getUser();
+            if (userDetails !== null) {
+                userDetails.valueChanges()
+                    .subscribe((x: any) => {
+                        this.currentUserName = x.username;
+                    });
+            }
         });
     }
 
@@ -35,9 +37,12 @@ export class ChatService {
     }
 
     getUser() {
-        const userId = this.user.uid;
-        const path = `/user/${userId}`;
-        return this.af.object(path);
+        if (this.user && this.user.uid) {
+            const userId = this.user.uid;
+            const path = `/user/${userId}`;
+            return this.af.object(path);
+        }
+        return null;
     }
 
     getCurrentUserName(): string {
