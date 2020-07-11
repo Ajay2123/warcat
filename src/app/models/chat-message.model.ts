@@ -1,7 +1,7 @@
 export class ChatMessage {
     $key?: string;
     email?: string;
-    userName?: string;
+    username?: string;
     message?: string;
     timeSent?: string;
 }

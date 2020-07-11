@@ -1,21 +1,11 @@
 <app-navbar></app-navbar>
 <div class="contacts">
     <ul>
-        <li class="contact">
+        <li class="contact" *ngFor="let user of usersList | async">
             <div class="wrap">
                 <img src="https://via.placeholder.com/150" alt="" />
                 <div class="meta">
-                    <p class="name">Louis Litt</p>
-                    <p class="preview">You just got LITT up, Mike.</p>
-                </div>
-            </div>
-        </li>
-        <li class="contact">
-            <div class="wrap">
-                <img src="https://via.placeholder.com/150" alt="" />
-                <div class="meta">
-                    <p class="name">Louis Litt</p>
-                    <p class="preview">You just got LITT up, Mike.</p>
+                    <p class="name">{{user.username}}</p>
                 </div>
             </div>
         </li>

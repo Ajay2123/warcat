@@ -1,25 +1,48 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ɵConsole } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireDatabase, AngularFireAction, AngularFireList } from '@angular/fire/database';
 import { AngularFireAuth } from '@angular/fire/auth';
 
 import { ChatMessage } from '../models/chat-message.model';
 import { Observable } from 'rxjs';
+import { AuthService } from './auth.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class ChatService {
     user: any;
-    userName: Observable<string>;
+    username: Observable<string>;
     chatMessage: ChatMessage;
-    constructor(private af: AngularFireDatabase,) {
-        /*      this.afAuth.authState.subscribe(auth => {
-                 if (auth !== undefined && auth !== null) {
-                     this.user = auth;
-                 }
-             }); */
+    currentUserName: string;
+    constructor(private af: AngularFireDatabase, private afAuth: AngularFireAuth, private authService: AuthService) {
+        this.afAuth.authState.subscribe(auth => {
+            if (auth !== undefined && auth !== null) {
+                this.user = auth;
+            }
+            this.getUser()
+                .valueChanges()
+                .subscribe((x: any) => {
+                    this.currentUserName = x.username;
+                    console.log("setting user name : ",this.currentUserName);
+                });
+        });
     }
+
+    getUsers() {
+        return this.af.list('user', ref => ref.orderByKey().limitToLast(10)).valueChanges();
+    }
+
+    getUser() {
+        const userId = this.user.uid;
+        const path = `/user/${userId}`;
+        return this.af.object(path);
+    }
+
+    getCurrentUserName(): string {
+        return this.currentUserName;
+    }
+
     getMessages() {
         return this.af.list('messages', ref => ref.orderByKey().limitToLast(10)).valueChanges();
     }
@@ -27,10 +50,10 @@ export class ChatService {
     sendMessage(msg: string) {
         if (this.isValidMsg(msg)) {
             const timeStamp = this.getTimeStamp();
-            //const userEmail = this.user.email;
+            const userEmail = this.user.email;
             this.chatMessage = {
-                email: 'ajay',
-                userName: 'ajay',
+                email: userEmail,
+                username: 'ajay',
                 message: msg,
                 timeSent: timeStamp,
             };
@@ -38,6 +61,7 @@ export class ChatService {
             messagesRef.push(this.chatMessage);
         }
     }
+
     isValidMsg(msg: string) {
         return (msg !== undefined && msg !== null && msg !== '' && msg !== ' ') ? true : false;
     }
@@ -53,7 +77,4 @@ export class ChatService {
         return (date + ' ' + time);
     }
 
-
 }
-/* , ref =>
-            ref.orderByKey().equalTo(25) */
