@@ -31,7 +31,6 @@ export class AuthService {
         return this.aFAuth.auth.signInWithEmailAndPassword(em, pwd)
             .then(user => {
                 this.authState = user;
-                console.log(this.authState);
                 this.updateStatus(true);
                 setTimeout(() => {
                     this.router.navigate(['chat']);

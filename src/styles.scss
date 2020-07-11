@@ -23,6 +23,7 @@ app-root {
 /* width */
 ::-webkit-scrollbar {
     width: 5px;
+    height: 15px;
     border-radius: 10px;
 }
 
@@ -40,12 +41,15 @@ app-root {
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
+
 .btn {
     background-color: #128C7E;
 }
-a{
+
+a {
     color: inherit;
 }
-input{
+
+input {
     outline: #128C7E;
 }

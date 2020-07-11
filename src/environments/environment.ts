@@ -14,6 +14,7 @@ export const environment = {
         appId: '1:394721509084:web:72041835811ad0630f7e19',
         measurementId: 'G-3CCM3G165B'
     },
+    encryptionKey: 'Fksy0b128bitEncrypti0n$'
 };
 
 /*

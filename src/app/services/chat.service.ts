@@ -2,10 +2,12 @@ import { Injectable, ɵConsole } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireDatabase, AngularFireAction, AngularFireList } from '@angular/fire/database';
 import { AngularFireAuth } from '@angular/fire/auth';
+import * as CryptoJS from 'crypto-js';
 
 import { ChatMessage } from '../models/chat-message.model';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
     providedIn: 'root'
@@ -24,7 +26,6 @@ export class ChatService {
                 .valueChanges()
                 .subscribe((x: any) => {
                     this.currentUserName = x.username;
-                    console.log("setting user name : ",this.currentUserName);
                 });
         });
     }
@@ -51,10 +52,12 @@ export class ChatService {
         if (this.isValidMsg(msg)) {
             const timeStamp = this.getTimeStamp();
             const userEmail = this.user.email;
+            const ciphertext = CryptoJS.AES.encrypt(msg, environment.encryptionKey).toString();
+            console.log(ciphertext);
             this.chatMessage = {
                 email: userEmail,
-                username: 'ajay',
-                message: msg,
+                username: this.currentUserName,
+                message: ciphertext,
                 timeSent: timeStamp,
             };
             const messagesRef = this.af.list('messages');

@@ -1,9 +1,9 @@
-<div class="feedWrapper">
+<div  class="feedWrapper">
     <div class="contact-profile">
         <img src="https://via.placeholder.com/150" alt="">
         <h1>Crush</h1>
     </div>
-    <div class="messages">
+    <div #scroller class="messages">
         <ul>
             <li *ngFor="let message of feed | async" class="sent">
                 <app-message [chatMessage]=message> </app-message>

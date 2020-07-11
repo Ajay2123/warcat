@@ -25,9 +25,7 @@ export class ChatFormComponent implements OnInit {
     }
 
     submit() {
-        console.log(this.chatForm.get('message').value);
         this.chat.sendMessage(this.getMessage());
-
         this.chatForm.reset();
     }
 
