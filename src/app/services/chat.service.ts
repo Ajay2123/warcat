@@ -5,9 +5,10 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import * as CryptoJS from 'crypto-js';
 
 import { ChatMessage } from '../models/chat-message.model';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { AuthService } from './auth.service';
 import { environment } from 'src/environments/environment';
+import { User } from '../models/user.model';
 
 @Injectable({
     providedIn: 'root'
@@ -16,7 +17,12 @@ export class ChatService {
     user: any;
     username: Observable<string>;
     chatMessage: ChatMessage;
-    currentUserName: string;
+    currentUserName: Subject<string> = new Subject<string>();
+    allChatRooms: string[];
+    currentChatRoomId: Subject<string> = new Subject<string>();
+    allUsers: Subject<User[]> = new Subject<User[]>();
+    currentChatRoomName: Subject<string> = new Subject<string>();
+
     constructor(private af: AngularFireDatabase, private afAuth: AngularFireAuth, private authService: AuthService) {
         this.afAuth.authState.subscribe(auth => {
             if (auth !== undefined && auth !== null) {
@@ -26,14 +32,31 @@ export class ChatService {
             if (userDetails !== null) {
                 userDetails.valueChanges()
                     .subscribe((x: any) => {
-                        this.currentUserName = x.username;
+                        this.currentUserName.next(x.username);
                     });
             }
+
+            this.getAllAllowedChatRooms(this.user.uid)
+                .subscribe((cids: string[]) =>
+                    this.allChatRooms = cids);
+
+            this.getUsers();
         });
     }
-
+    authUser() {
+        return this.user;
+    }
+    getAllUsers() {
+        return this.af.object('/user');
+    }
     getUsers() {
-        return this.af.list('user', ref => ref.orderByKey().limitToLast(10)).valueChanges();
+        this.af.list('user', ref => ref.orderByKey().limitToLast(10))
+            .valueChanges()
+            .subscribe((userlist: any) =>
+                this.allUsers.next(
+                    userlist.filter(
+                        (user: any) =>
+                            user.uid !== this.user.uid)));
     }
 
     getUser() {
@@ -43,31 +66,6 @@ export class ChatService {
             return this.af.object(path);
         }
         return null;
-    }
-
-    getCurrentUserName(): string {
-        return this.currentUserName;
-    }
-
-    getMessages() {
-        return this.af.list('messages', ref => ref.orderByKey().limitToLast(10)).valueChanges();
-    }
-
-    sendMessage(msg: string) {
-        if (this.isValidMsg(msg)) {
-            const timeStamp = this.getTimeStamp();
-            const userEmail = this.user.email;
-            const ciphertext = CryptoJS.AES.encrypt(msg, environment.encryptionKey).toString();
-            console.log(ciphertext);
-            this.chatMessage = {
-                email: userEmail,
-                username: this.currentUserName,
-                message: ciphertext,
-                timeSent: timeStamp,
-            };
-            const messagesRef = this.af.list('messages');
-            messagesRef.push(this.chatMessage);
-        }
     }
 
     isValidMsg(msg: string) {
@@ -83,6 +81,77 @@ export class ChatService {
             now.getUTCMinutes() + ':' +
             now.getUTCSeconds();
         return (date + ' ' + time);
+    }
+
+    setCurrentChatRoom(cid) {
+        this.currentChatRoomId.next(cid);
+    }
+
+    getAllChatRooms() {
+        return this.allChatRooms;
+    }
+
+    getChatRoomId(selectedUserId) {
+        return (this.user.uid > selectedUserId) ?
+            this.user.uid + selectedUserId
+            : selectedUserId + this.user.uid;
+    }
+
+    setCurrentChatRoomName(chatRoomName: string) {
+        this.currentChatRoomName.next(chatRoomName);
+    }
+
+    createChatRoom(selectedUserId) {
+        const roomName = this.getChatRoomId(selectedUserId);
+        const roomRef = this.af.list(`chatRooms/${roomName}/members`);
+        roomRef.push(selectedUserId);
+        roomRef.push(this.user.uid);
+        return roomName;
+    }
+
+    private getAllAllowedChatRooms(uid) {
+        if (uid) {
+            const path = `/user/${uid}/allowedChatRooms`;
+            return this.af.list(path)
+                .valueChanges();
+        }
+    }
+    /*     updateChatRoomPermissions(selectedUserId, chatRoomId) {
+            const userList = [this.user.uid, selectedUserId];
+            userList.forEach(userID => {
+                this.getAllAllowedChatRooms(userID)
+                    .subscribe(allowedID => {
+                        const permitted = allowedID.filter(id => {
+                            return id === chatRoomId
+                        });
+                    });
+            });
+        } */
+    getMessages(chatRoomId) {
+        return this.af.list(`chatRooms/${chatRoomId}/messages`,
+            ref => ref.orderByKey()
+                .limitToLast(10))
+            .valueChanges();
+    }
+
+    sendMessage(chatRoomId, message) {
+        if (this.isValidMsg(message)) {
+            const timeStamp = this.getTimeStamp();
+            const userEmail = this.user.email;
+            const ciphertext = CryptoJS.AES.encrypt(message, environment.encryptionKey).toString();
+            console.log(ciphertext);
+            this.chatMessage = {
+                email: userEmail,
+                message: ciphertext,
+                timeSent: timeStamp,
+            };
+            this.af.list(`chatRooms/${chatRoomId}/messages`)
+                .push(this.chatMessage);
+        }
+    }
+
+    getLastMessage(chatRoomId) {
+        return this.af.list(`chatRooms/${chatRoomId}/messages`, ref => ref.limitToLast(1));
     }
 
 }

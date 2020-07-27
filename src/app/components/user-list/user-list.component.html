@@ -1,7 +1,7 @@
 <app-navbar></app-navbar>
 <div class="contacts">
     <ul>
-        <li class="contact" *ngFor="let user of usersList | async">
+        <li class="contact" *ngFor="let user of usersList " (click)="setChatRoomId(user.uid,user.username)">
             <div class="wrap">
                 <img src="https://via.placeholder.com/150" alt="" />
                 <div class="meta">

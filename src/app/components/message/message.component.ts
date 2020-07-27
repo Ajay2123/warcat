@@ -24,7 +24,6 @@ export class MessageComponent implements OnInit {
     }
 
     ngOnInit(chatMessage = this.chatMessage) {
-
         const bytes = CryptoJS.AES.decrypt(chatMessage.message, environment.encryptionKey);
         this.messageContent = bytes.toString(CryptoJS.enc.Utf8);
         this.timeStamp = chatMessage.timeSent.split(' ')[1];

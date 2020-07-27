@@ -8,7 +8,14 @@ import { ChatService } from 'src/app/services/chat.service';
 })
 export class ChatFormComponent implements OnInit {
     chatForm: FormGroup;
-    constructor(private fb: FormBuilder, private chat: ChatService) { }
+    chatRoomId: string;
+    user: any;
+    constructor(private fb: FormBuilder, private chatService: ChatService) {
+        this.user = this.chatService.authUser();
+        this.chatService.currentChatRoomId.subscribe(id => {
+            this.chatRoomId = id;
+        });
+    }
 
     ngOnInit() {
         this.chatForm = this.fb.group({
@@ -25,7 +32,7 @@ export class ChatFormComponent implements OnInit {
     }
 
     submit() {
-        this.chat.sendMessage(this.getMessage());
+        this.chatService.sendMessage(this.chatRoomId, this.getMessage());
         this.chatForm.reset();
     }
 

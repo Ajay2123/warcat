@@ -49,18 +49,19 @@ export class AuthService {
                 .then(user => {
                     console.log(user);
                     this.authState = user;
-                    this.updateUserName(em, un);
+                    this.updateUserDetails(em, un);
                     this.updateStatus(true);
                     res();
                 })
                 .catch(error => rej(error));
         });
     }
-    updateUserName(em: string, un: string) {
+    updateUserDetails(em: string, un: string) {
         const userDbPath = `user/${this.currentUserId}`;
         const data = {
             email: em,
-            username: un
+            username: un,
+            uid: this.currentUserId
         };
         this.aDB.object(userDbPath)
             .update(data)

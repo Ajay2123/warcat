@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/models/user.model';
-import { Observable } from 'rxjs';
 import { ChatService } from 'src/app/services/chat.service';
 
 @Component({
@@ -9,11 +8,26 @@ import { ChatService } from 'src/app/services/chat.service';
     styleUrls: ['./user-list.component.scss']
 })
 export class UserListComponent implements OnInit {
-    usersList: Observable<User[]>;
-    constructor(private chat: ChatService) {
-        this.usersList = this.chat.getUsers();
+    usersList: User[];
+    constructor(private chatService: ChatService) {
+        this.chatService.allUsers.subscribe(x => this.usersList = x);
     }
     ngOnInit() {
     }
+    private getValidChatRoomId(selectedUserId) {
+        let chatRoomId = this.chatService
+            .getAllChatRooms()
+            .find((cid: string) =>
+                cid === this.chatService.getChatRoomId(selectedUserId)
+            );
 
+        if (!chatRoomId) {
+            chatRoomId = this.chatService.createChatRoom(selectedUserId);
+        }
+        return chatRoomId;
+    }
+    setChatRoomId(selectedUserId, selectedUserName) {
+        this.chatService.setCurrentChatRoomName(selectedUserName);
+        this.chatService.setCurrentChatRoom(this.getValidChatRoomId(selectedUserId));
+    }
 }

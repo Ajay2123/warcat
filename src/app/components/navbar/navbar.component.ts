@@ -12,11 +12,7 @@ export class NavbarComponent implements OnInit {
     constructor(private authService: AuthService, private chatService: ChatService) { }
 
     ngOnInit() {
-        const timeOut = setInterval(() => {
-            this.username = this.chatService.getCurrentUserName();
-            if (this.username !== undefined || this.username !== null) { clearTimeout(timeOut); }
-        }, 500);
-
+        this.chatService.currentUserName.subscribe(x => this.username = x);
     }
     logout() {
         this.authService.logout();

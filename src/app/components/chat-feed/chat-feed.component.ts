@@ -10,10 +10,14 @@ import { AuthService } from 'src/app/services/auth.service';
     styleUrls: ['./chat-feed.component.scss']
 })
 export class ChatFeedComponent implements OnInit, AfterViewChecked {
+    chatRoomName: string;
     feed: Observable<ChatMessage[]>;
     @ViewChild('scroller', { static: false }) private feedContainer: ElementRef;
-    constructor(private chat: ChatService, private authService: AuthService) {
-        this.feed = this.chat.getMessages();
+    constructor(private chatService: ChatService, private authService: AuthService) {
+        this.chatService.currentChatRoomId.subscribe(id => {
+            this.feed = this.chatService.getMessages(id);
+        });
+        this.chatService.currentChatRoomName.subscribe(x => this.chatRoomName = x);
     }
 
     ngOnInit() {

@@ -9,10 +9,11 @@ import {
 export const appRoutes: Routes = [
     { path: 'signup', component: SignupComponent },
     { path: 'login', component: LoginComponent },
-    {
-        path: 'chat',
-        component: ChatRoomComponent,
-        canActivate: [AuthGuard]
-    },
+    { path: 'chat', component: ChatRoomComponent },
+    /*     {
+            path: 'chat',
+            component: ChatRoomComponent,
+            canActivate: [AuthGuard]
+        }, */
     { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];
